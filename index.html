@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎂 Sinh Nhật 18 Tuổi - Thoaa 🎉</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-content">
+            <div class="cake-icon">🎂</div>
+            <p>Đang chuẩn bị tiệc cho Thoaa...</p>
+            <div class="loader-bar"><div class="loader-progress"></div></div>
+        </div>
+    </div>
+
+    <!-- Floating particles background -->
+    <div id="particles"></div>
+
+    <!-- Music toggle -->
+    <button id="music-toggle" class="music-btn" title="Bật/Tắt nhạc">
+        <span class="music-icon">🎵</span>
+    </button>
+
+    <!-- Hero Section -->
+    <section id="hero" class="section hero">
+        <div class="hero-overlay"></div>
+        <canvas id="fireworks-canvas"></canvas>
+        <div class="hero-content">
+            <div class="badge animate-pop">🎉 Sinh Nhật 18 Tuổi 🎉</div>
+            <h1 class="hero-title">
+                <span class="line1 animate-slide-up">Happy</span>
+                <span class="line2 animate-slide-up delay-1">18<sup>th</sup></span>
+                <span class="line3 animate-slide-up delay-2">Birthday!</span>
+            </h1>
+            <div class="hero-name animate-fade-in delay-3">
+                <span class="decorative-line"></span>
+                <span class="name">✨ Thoaa ✨</span>
+                <span class="decorative-line"></span>
+            </div>
+            <p class="hero-subtitle animate-fade-in delay-4">Em gái yêu quý của gia đình đã lớn rồi!</p>
+            <div class="scroll-indicator animate-bounce delay-5">
+                <span>Cuộn xuống</span>
+                <div class="scroll-arrow">↓</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Countdown Section -->
+    <section id="countdown" class="section countdown-section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">
+                <span class="emoji">⏰</span> Đếm Ngược Đến Ngày Của Thoaa
+            </h2>
+            <p class="section-subtitle" data-aos="fade-up">Ngày đặc biệt nhất trong năm sắp đến rồi!</p>
+            <div class="countdown-wrapper" data-aos="zoom-in">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">00</div>
+                    <div class="countdown-label">Ngày</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div class="countdown-label">Giờ</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div class="countdown-label">Phút</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">00</div>
+                    <div class="countdown-label">Giây</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Gallery Section -->
+    <section id="gallery" class="section gallery-section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">
+                <span class="emoji">📸</span> Thoaa Qua Những Khoảnh Khắc
+            </h2>
+            <p class="section-subtitle" data-aos="fade-up">Lưu giữ kỷ niệm đẹp của em gái nhỏ</p>
+            
+            <div class="story-gallery">
+                <div class="story-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="story-image">
+                        <img src="img/igsnapinsta.com-DBqrW_bTDo7.jpg" alt="Kỷ niệm 1">
+                        <div class="story-overlay">
+                            <span class="story-caption">Kỷ niệm #1</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="story-image">
+                        <img src="img/igsnapinsta.com-DFh9o_6zHhO.jpg" alt="Kỷ niệm 2">
+                        <div class="story-overlay">
+                            <span class="story-caption">Kỷ niệm #2</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="story-image">
+                        <img src="img/igsnapinsta.com-DJgzEIGzGzw.jpg" alt="Kỷ niệm 3">
+                        <div class="story-overlay">
+                            <span class="story-caption">Kỷ niệm #3</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="story-image">
+                        <img src="img/igsnapinsta.com-DU3DyfYkeJv.jpg" alt="Kỷ niệm 4">
+                        <div class="story-overlay">
+                            <span class="story-caption">Kỷ niệm #4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <button class="lightbox-close">&times;</button>
+        <button class="lightbox-prev">&#10094;</button>
+        <button class="lightbox-next">&#10095;</button>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="Enlarged photo">
+        </div>
+    </div>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="section timeline-section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">
+                <span class="emoji">🌟</span> 18 Năm Lớn Khôn Của Thoaa
+            </h2>
+            <p class="section-subtitle" data-aos="fade-up">Nhìn lại hành trình em đã đi qua</p>
+            
+            <div class="timeline">
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-dot">👶</div>
+                    <div class="timeline-content">
+                        <h3>Ngày Thoaa chào đời</h3>
+                        <p>Cả nhà vui mừng khôn xiết khi đón thêm một thành viên nhỏ bé, đáng yêu.</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-dot">�</div>
+                    <div class="timeline-content">
+                        <h3>Những bước chân đầu tiên</h3>
+                        <p>Thoaa chập chững tập đi, ngã rồi lại đứng dậy — cứng cỏi từ nhỏ luôn!</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-dot">📚</div>
+                    <div class="timeline-content">
+                        <h3>Ngày đầu đến trường</h3>
+                        <p>Cô bé Thoaa mắt tròn xoe, ba lô to hơn người, bước vào lớp học đầu tiên.</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-dot">�</div>
+                    <div class="timeline-content">
+                        <h3>Tuổi thiếu nữ</h3>
+                        <p>Thoaa ngày càng xinh đẹp, tự tin và có những ước mơ riêng của mình.</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-dot">🎂</div>
+                    <div class="timeline-content">
+                        <h3>18 tuổi — Trưởng thành!</h3>
+                        <p>Hôm nay Thoaa chính thức trưởng thành. Cả gia đình tự hào về em lắm! 🎉</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wishes Section -->
+    <section id="wishes" class="section wishes-section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">
+                <span class="emoji">💌</span> Gia Đình Gửi Thoaa
+            </h2>
+            <div class="wishes-card" data-aos="zoom-in">
+                <div class="wishes-decoration top-left">✨</div>
+                <div class="wishes-decoration top-right">🌟</div>
+                <div class="wishes-decoration bottom-left">💫</div>
+                <div class="wishes-decoration bottom-right">⭐</div>
+                <div class="wishes-content">
+                    <p class="wishes-text">
+                        Thoaa thương mến,<br><br>
+                        18 năm trước, gia đình mình đón thêm một cô công chúa nhỏ. 
+                        Vậy mà thoắt cái, em đã lớn thật rồi.<br><br>
+                        Nhìn Thoaa trưởng thành từng ngày, cả nhà ai cũng vui và tự hào. 
+                        Em luôn là nguồn năng lượng, là tiếng cười, là niềm hạnh phúc của gia đình mình.<br><br>
+                        Bước sang tuổi 18, anh chị và cả nhà chúc em luôn vui vẻ, mạnh khỏe, 
+                        tự tin theo đuổi những gì em thích và biết rằng — dù đi đâu, làm gì, 
+                        gia đình luôn ở đây, luôn yêu thương và ủng hộ em. 💖<br><br>
+                        <strong>Happy 18th Birthday, Thoaa!</strong> 🎂🎉
+                    </p>
+                    <div class="wishes-signature">
+                        <span class="heart-beat">❤️</span>
+                        <span>Thương nhiều — Anh chị và cả gia đình</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Celebrate / Blow Candles Section -->
+    <section id="celebrate" class="section celebrate-section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">
+                <span class="emoji">🎊</span> Thổi Nến Nào Thoaa!
+            </h2>
+            <div class="celebrate-content" data-aos="zoom-in">
+                
+                <!-- CSS 3D Birthday Cake -->
+                <div class="cake-wrapper">
+                    <div class="cake-candles" id="cake-candles">
+                        <div class="cake-candle"><div class="flame">🔥</div><div class="stick"></div></div>
+                        <div class="cake-candle"><div class="flame">🔥</div><div class="stick"></div></div>
+                        <div class="cake-candle"><div class="flame">🔥</div><div class="stick"></div></div>
+                        <div class="cake-candle"><div class="flame">🔥</div><div class="stick"></div></div>
+                        <div class="cake-candle"><div class="flame">🔥</div><div class="stick"></div></div>
+                    </div>
+                    <div class="cake-top">
+                        <span class="cake-text">Happy Birthday</span>
+                        <span class="cake-name">Thoaa 🎀</span>
+                    </div>
+                    <div class="cake-middle"></div>
+                    <div class="cake-bottom"></div>
+                    <div class="cake-plate"></div>
+                </div>
+
+                <p class="celebrate-instruction">Nhắm mắt, ước một điều, rồi nhấn nút nhé!</p>
+                
+                <button id="celebrate-btn" class="celebrate-btn">
+                    <span>🌬️ Phù ~ Thổi Nến!</span>
+                </button>
+
+                <!-- Hidden birthday message after blowing -->
+                <div id="after-blow" class="after-blow hidden">
+                    <p class="blow-msg">🎉 Nến đã tắt! Chúc Thoaa ước gì được nấy nha! 🎉</p>
+                    <p class="blow-sub">Cả nhà yêu Thoaa nhiều lắm 💕</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">Làm với ❤️ dành tặng Thoaa nhân ngày trưởng thành</p>
+                <p class="footer-year">Từ gia đình yêu thương — 2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>
