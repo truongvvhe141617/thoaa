@@ -157,7 +157,7 @@ function animateFireworks() {
 // ============================================
 function updateCountdown() {
     // Set birthday date - change this to the actual birthday!
-    const birthday = new Date('2026-06-15T00:00:00');
+    const birthday = new Date('2026-05-05T00:00:00');
     const now = new Date();
     const diff = birthday - now;
 
