@@ -152,7 +152,7 @@ function animateFireworks() {
 // COUNTDOWN TIMER — Sinh nhật 5/5
 // ============================================
 function updateCountdown() {
-    const birthday = new Date('2026-05-04T23:05:00');
+    const birthday = new Date('2026-05-04T23:07:00');
     const now = new Date();
     const diff = birthday - now;
 
@@ -577,14 +577,14 @@ let musicPlaying = false;
 bgMusic.volume = 0.7;
 
 function playMusic() {
-    bgMusic.currentTime = 13;
+    // iOS cần play() trước rồi mới seek
     const playPromise = bgMusic.play();
     if (playPromise !== undefined) {
         playPromise.then(() => {
+            bgMusic.currentTime = 13;
             musicPlaying = true;
             musicBtn.classList.add('playing');
         }).catch(() => {
-            // Nếu bị chặn, thử lại lần sau user tap
             musicPlaying = false;
             musicBtn.classList.remove('playing');
         });
@@ -601,6 +601,13 @@ function pauseMusic() {
 bgMusic.addEventListener('ended', () => {
     bgMusic.currentTime = 13;
     bgMusic.play();
+});
+
+// Đảm bảo seek hoạt động khi metadata loaded
+bgMusic.addEventListener('loadedmetadata', () => {
+    if (musicPlaying && bgMusic.currentTime < 13) {
+        bgMusic.currentTime = 13;
+    }
 });
 
 musicBtn.addEventListener('click', () => {
