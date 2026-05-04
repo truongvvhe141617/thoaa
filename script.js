@@ -451,51 +451,40 @@ function animateConfetti() {
 animateConfetti();
 
 // ============================================
-// MUSIC — YouTube embed created on user tap (iOS compatible)
+// MUSIC — Audio file (works on iOS/iPhone)
 // ============================================
 const musicBtn = document.getElementById('music-toggle');
+const bgMusic = document.getElementById('bg-music');
 let musicPlaying = false;
-let musicIframe = null;
 
-function createMusicPlayer() {
-    // Tạo iframe YouTube ngay trong user gesture để iOS cho phép autoplay
-    if (musicIframe) return;
-    const container = document.getElementById('music-container');
-    musicIframe = document.createElement('iframe');
-    musicIframe.setAttribute('width', '1');
-    musicIframe.setAttribute('height', '1');
-    musicIframe.setAttribute('frameborder', '0');
-    musicIframe.setAttribute('allow', 'autoplay; encrypted-media');
-    musicIframe.setAttribute('allowfullscreen', '');
-    musicIframe.setAttribute('playsinline', '');
-    musicIframe.style.cssText = 'width:1px;height:1px;border:0;position:absolute;';
-    // autoplay=1 + start=13 — phát ngay khi tạo
-    musicIframe.src = 'https://www.youtube.com/embed/5u4xTa3LR2U?autoplay=1&start=13&loop=1&playlist=5u4xTa3LR2U&playsinline=1&controls=0&disablekb=1&fs=0&modestbranding=1&rel=0';
-    container.appendChild(musicIframe);
-    musicPlaying = true;
-    musicBtn.classList.add('playing');
-}
+bgMusic.volume = 0.7;
 
 function playMusic() {
-    if (!musicIframe) {
-        createMusicPlayer();
-    } else {
-        // Reload iframe to resume
-        const src = musicIframe.src;
-        musicIframe.src = src;
-        musicPlaying = true;
-        musicBtn.classList.add('playing');
+    bgMusic.currentTime = 13;
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            musicPlaying = true;
+            musicBtn.classList.add('playing');
+        }).catch(() => {
+            // Nếu bị chặn, thử lại lần sau user tap
+            musicPlaying = false;
+            musicBtn.classList.remove('playing');
+        });
     }
 }
 
 function pauseMusic() {
-    if (musicIframe) {
-        // Remove src to stop playback
-        musicIframe.src = '';
-        musicPlaying = false;
-        musicBtn.classList.remove('playing');
-    }
+    bgMusic.pause();
+    musicPlaying = false;
+    musicBtn.classList.remove('playing');
 }
+
+// Loop nhạc từ giây 13
+bgMusic.addEventListener('ended', () => {
+    bgMusic.currentTime = 13;
+    bgMusic.play();
+});
 
 musicBtn.addEventListener('click', () => {
     if (musicPlaying) {

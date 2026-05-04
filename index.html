@@ -36,8 +36,10 @@
         <span class="music-icon">🎵</span>
     </button>
 
-    <!-- Music container - iframe sẽ được tạo khi user bấm play -->
-    <div id="music-container" style="position:fixed;top:-200vh;left:-200vw;width:1px;height:1px;overflow:hidden;pointer-events:none;opacity:0;"></div>
+    <!-- Background Music - bỏ file music.mp3 vào cùng thư mục -->
+    <audio id="bg-music" preload="auto" playsinline>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- Hero Section -->
     <section id="hero" class="section hero">
