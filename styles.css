@@ -85,12 +85,12 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--darker);
+    background: radial-gradient(ellipse at center, #1a1a3e 0%, #0f0f23 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 10000;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
+    transition: opacity 1s ease, visibility 1s ease;
 }
 
 #preloader.hidden {
@@ -100,38 +100,129 @@ body {
 
 .loader-content {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
 }
 
-.cake-icon {
-    font-size: 4rem;
-    animation: bounce 1s ease infinite;
+.loader-rings {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.loader-content p {
-    margin-top: 20px;
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.7);
+.ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid transparent;
+}
+
+.ring-1 {
+    width: 140px;
+    height: 140px;
+    border-top-color: var(--primary);
+    border-right-color: var(--primary);
+    animation: spin 1.5s linear infinite;
+}
+
+.ring-2 {
+    width: 110px;
+    height: 110px;
+    border-bottom-color: var(--secondary);
+    border-left-color: var(--secondary);
+    animation: spin 1.2s linear infinite reverse;
+}
+
+.ring-3 {
+    width: 80px;
+    height: 80px;
+    border-top-color: var(--accent);
+    border-right-color: var(--accent);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loader-emoji {
+    font-size: 2.5rem;
+    animation: pulse-loader 1s ease infinite alternate;
+    z-index: 1;
+}
+
+@keyframes pulse-loader {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.15); }
+}
+
+.loader-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-top: 10px;
+}
+
+.loader-subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 1px;
 }
 
 .loader-bar {
-    width: 200px;
+    width: 220px;
     height: 4px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    margin-top: 20px;
+    border-radius: 4px;
+    margin-top: 8px;
     overflow: hidden;
 }
 
 .loader-progress {
     width: 0%;
     height: 100%;
-    background: var(--gradient-2);
-    border-radius: 2px;
-    animation: loading 2s ease forwards;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    background-size: 200% 100%;
+    border-radius: 4px;
+    animation: loading 2.2s ease forwards, gradient-shift 1s ease infinite;
 }
 
 @keyframes loading {
     to { width: 100%; }
+}
+
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+.loader-sparkles {
+    display: flex;
+    gap: 12px;
+    font-size: 1.2rem;
+    margin-top: 5px;
+}
+
+.loader-sparkles span {
+    animation: twinkle 1.5s ease infinite;
+}
+
+.loader-sparkles span:nth-child(1) { animation-delay: 0s; }
+.loader-sparkles span:nth-child(2) { animation-delay: 0.3s; }
+.loader-sparkles span:nth-child(3) { animation-delay: 0.6s; }
+.loader-sparkles span:nth-child(4) { animation-delay: 0.9s; }
+.loader-sparkles span:nth-child(5) { animation-delay: 1.2s; }
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
 }
 
 /* ============================================
@@ -595,98 +686,62 @@ body {
 .lightbox-next { right: 20px; top: 50%; transform: translateY(-50%); }
 
 /* ============================================
-   TIMELINE
+   FUN FACTS SECTION
    ============================================ */
-.timeline-section {
+.funfacts-section {
     background: var(--darker);
     min-height: auto;
     padding: 100px 0;
 }
 
-.timeline {
-    position: relative;
+.funfacts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px 0;
 }
 
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 3px;
-    height: 100%;
-    background: linear-gradient(to bottom, var(--primary), var(--secondary), var(--accent));
-    border-radius: 3px;
-}
-
-.timeline-item {
-    display: flex;
-    justify-content: flex-end;
-    padding: 20px 0;
-    width: 50%;
-    position: relative;
-}
-
-.timeline-item:nth-child(odd) {
-    align-self: flex-end;
-    margin-left: 50%;
-    justify-content: flex-start;
-    padding-left: 40px;
-}
-
-.timeline-item:nth-child(even) {
-    padding-right: 40px;
-}
-
-.timeline-dot {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background: var(--dark);
-    border: 3px solid var(--secondary);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    z-index: 1;
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
-}
-
-.timeline-item:nth-child(odd) .timeline-dot {
-    left: -25px;
-}
-
-.timeline-item:nth-child(even) .timeline-dot {
-    right: -25px;
-}
-
-.timeline-content {
+.funfact-card {
     background: var(--glass);
     border: 1px solid var(--glass-border);
-    border-radius: 15px;
-    padding: 25px;
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
     backdrop-filter: blur(10px);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
 }
 
-.timeline-content:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-glow);
+.funfact-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(168, 85, 247, 0.3);
+    border-color: var(--primary);
 }
 
-.timeline-content h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-    color: var(--accent);
+.funfact-icon {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
 }
 
-.timeline-content p {
-    color: rgba(255, 255, 255, 0.7);
+.funfact-card p {
     font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .funfacts-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .funfacts-grid {
+        grid-template-columns: 1fr;
+        max-width: 300px;
+    }
 }
 
 /* ============================================

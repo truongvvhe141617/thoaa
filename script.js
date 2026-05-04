@@ -5,7 +5,7 @@ window.addEventListener('load', () => {
     setTimeout(() => {
         document.getElementById('preloader').classList.add('hidden');
         initFireworks();
-    }, 2200);
+    }, 2500);
 });
 
 // ============================================
@@ -14,7 +14,6 @@ window.addEventListener('load', () => {
 function createParticles() {
     const container = document.getElementById('particles');
     const colors = ['#ff6b9d', '#a855f7', '#fbbf24', '#34d399', '#f472b6', '#818cf8'];
-    const shapes = ['●', '★', '♥', '✦', '◆'];
 
     for (let i = 0; i < 30; i++) {
         const particle = document.createElement('div');
@@ -105,7 +104,6 @@ class Firework {
 function initFireworks() {
     fwRunning = true;
     animateFireworks();
-    // Launch fireworks periodically
     launchFirework();
     setInterval(launchFirework, 1500);
 }
@@ -123,18 +121,16 @@ function animateFireworks() {
     fwCtx.fillRect(0, 0, fwCanvas.width, fwCanvas.height);
     fwCtx.globalCompositeOperation = 'lighter';
 
-    // Update fireworks
     fireworks = fireworks.filter(fw => {
         fw.update();
         if (fw.alive) fw.draw();
         return fw.alive;
     });
 
-    // Update particles
     fwParticles = fwParticles.filter(p => {
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.05; // gravity
+        p.vy += 0.05;
         p.life -= p.decay;
 
         if (p.life > 0) {
@@ -153,11 +149,10 @@ function animateFireworks() {
 }
 
 // ============================================
-// COUNTDOWN TIMER
+// COUNTDOWN TIMER — Sinh nhật 5/5
 // ============================================
 function updateCountdown() {
-    // Set birthday date - change this to the actual birthday!
-    const birthday = new Date('2026-05-05T00:00:00');
+    const birthday = new Date('2026-05-04T22:15:00');
     const now = new Date();
     const diff = birthday - now;
 
@@ -166,6 +161,12 @@ function updateCountdown() {
         document.getElementById('hours').textContent = '🎂';
         document.getElementById('minutes').textContent = '🎊';
         document.getElementById('seconds').textContent = '🥳';
+
+        // Trigger celebration when countdown hits zero!
+        if (!window.countdownCelebrated) {
+            window.countdownCelebrated = true;
+            triggerBirthdayCelebration();
+        }
         return;
     }
 
@@ -178,6 +179,100 @@ function updateCountdown() {
     animateNumber('hours', hours);
     animateNumber('minutes', minutes);
     animateNumber('seconds', seconds);
+}
+
+// Big celebration when countdown reaches zero
+function triggerBirthdayCelebration() {
+    // Confetti explosion — multiple waves
+    launchConfetti();
+    setTimeout(() => launchConfetti(), 1000);
+    setTimeout(() => launchConfetti(), 2000);
+
+    // Auto play music
+    setTimeout(() => playMusic(), 500);
+
+    // Show celebration banner
+    const banner = document.createElement('div');
+    banner.id = 'birthday-banner';
+    banner.innerHTML = `
+        <div class="birthday-banner-content">
+            <div class="banner-emoji">🎂🎉🥳</div>
+            <h2>HAPPY BIRTHDAY THOA!</h2>
+            <p>Chính thức 18 tuổi rồi nè! 🎊</p>
+            <button onclick="this.parentElement.parentElement.remove()">Cảm ơn! ❤️</button>
+        </div>
+    `;
+    document.body.appendChild(banner);
+
+    // Add banner styles
+    const bannerStyle = document.createElement('style');
+    bannerStyle.textContent = `
+        #birthday-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            animation: banner-fade-in 0.8s ease;
+        }
+        @keyframes banner-fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .birthday-banner-content {
+            text-align: center;
+            animation: banner-pop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.3s both;
+        }
+        @keyframes banner-pop {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .banner-emoji {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce-banner 1s ease infinite;
+        }
+        @keyframes bounce-banner {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .birthday-banner-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 6vw, 4rem);
+            background: linear-gradient(135deg, #fbbf24, #ff6b9d, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+        .birthday-banner-content p {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 30px;
+        }
+        .birthday-banner-content button {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #ff6b9d, #a855f7);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .birthday-banner-content button:hover {
+            transform: scale(1.05);
+        }
+    `;
+    document.head.appendChild(bannerStyle);
 }
 
 function animateNumber(id, value) {
@@ -266,7 +361,6 @@ document.addEventListener('keydown', (e) => {
 const confettiCanvas = document.getElementById('confetti-canvas');
 const confettiCtx = confettiCanvas.getContext('2d');
 let confettiPieces = [];
-let confettiRunning = false;
 
 function resizeConfettiCanvas() {
     confettiCanvas.width = window.innerWidth;
@@ -294,7 +388,6 @@ class ConfettiPiece {
         this.x += this.speedX;
         this.rotation += this.rotationSpeed;
         this.speedX += (Math.random() - 0.5) * 0.2;
-
         if (this.y > confettiCanvas.height + 20) {
             this.opacity -= 0.02;
         }
@@ -306,7 +399,6 @@ class ConfettiPiece {
         confettiCtx.rotate((this.rotation * Math.PI) / 180);
         confettiCtx.globalAlpha = this.opacity;
         confettiCtx.fillStyle = this.color;
-
         if (this.shape === 'rect') {
             confettiCtx.fillRect(-this.size / 2, -this.size / 4, this.size, this.size / 2);
         } else {
@@ -314,35 +406,77 @@ class ConfettiPiece {
             confettiCtx.arc(0, 0, this.size / 2, 0, Math.PI * 2);
             confettiCtx.fill();
         }
-
         confettiCtx.restore();
     }
 }
 
 function launchConfetti() {
-    confettiRunning = true;
     const interval = setInterval(() => {
         for (let i = 0; i < 5; i++) {
             confettiPieces.push(new ConfettiPiece());
         }
     }, 50);
-
     setTimeout(() => clearInterval(interval), 3000);
-    setTimeout(() => { confettiRunning = false; }, 6000);
 }
 
 function animateConfetti() {
     confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-
     confettiPieces = confettiPieces.filter(p => p.opacity > 0);
     confettiPieces.forEach(p => {
         p.update();
         p.draw();
     });
-
     requestAnimationFrame(animateConfetti);
 }
 animateConfetti();
+
+// ============================================
+// MUSIC — YouTube IFrame API
+// ============================================
+const musicBtn = document.getElementById('music-toggle');
+let musicPlaying = false;
+let ytPlayer = null;
+let ytReady = false;
+
+// Load YouTube IFrame API
+const ytScript = document.createElement('script');
+ytScript.src = 'https://www.youtube.com/iframe_api';
+document.head.appendChild(ytScript);
+
+window.onYouTubeIframeAPIReady = function () {
+    ytPlayer = new YT.Player('yt-player', {
+        events: {
+            onReady: function () {
+                ytReady = true;
+                ytPlayer.setVolume(60);
+            }
+        }
+    });
+};
+
+function playMusic() {
+    if (ytReady && ytPlayer) {
+        ytPlayer.playVideo();
+        musicPlaying = true;
+        musicBtn.classList.add('playing');
+    }
+}
+
+function pauseMusic() {
+    if (ytReady && ytPlayer) {
+        ytPlayer.pauseVideo();
+        musicPlaying = false;
+        musicBtn.classList.remove('playing');
+    }
+}
+
+musicBtn.addEventListener('click', () => {
+    if (musicPlaying) {
+        pauseMusic();
+    } else {
+        playMusic();
+    }
+});
 
 // ============================================
 // CELEBRATE BUTTON — Blow Candles
@@ -363,154 +497,29 @@ document.getElementById('celebrate-btn').addEventListener('click', function () {
         afterBlow.classList.add('show');
     }, 800);
 
-    // Play birthday tune
+    // Play music when blowing candles
     if (!musicPlaying) {
-        musicPlaying = true;
-        musicBtn.classList.add('playing');
-        playBirthdayTune();
+        playMusic();
     }
 
     // Button animation
     this.style.transform = 'scale(0.9)';
-    this.textContent = '🎉 Chúc mừng Thoaa! 🎉';
+    this.textContent = '🎉 Chúc mừng Thoa! 🎉';
     setTimeout(() => {
         this.style.transform = '';
     }, 200);
 
-    // Reset after 8 seconds
+    // Reset after 10 seconds
     setTimeout(() => {
         candles.classList.remove('blown');
         afterBlow.classList.add('hidden');
         afterBlow.classList.remove('show');
         this.innerHTML = '<span>🌬️ Phù ~ Thổi Nến!</span>';
-    }, 8000);
+    }, 10000);
 });
 
 // ============================================
-// MUSIC TOGGLE (placeholder)
-// ============================================
-const musicBtn = document.getElementById('music-toggle');
-let musicPlaying = false;
-
-// Create a simple audio context for birthday tune
-let audioCtx = null;
-
-function playBirthdayTune() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-
-    // Full "Happy Birthday" melody — played twice (lần 1 + lần 2 cao hơn)
-    // Tempo chậm hơn, âm thanh ấm hơn
-    const t = 0.42; // tempo unit — chậm hơn cho nghe rõ
-
-    // Lần 1: C major
-    const verse1 = [
-        // "Happy birthday to you"
-        { freq: 264, dur: t*1 },   // Hap-
-        { freq: 264, dur: t*0.5 }, // py
-        { freq: 297, dur: t*1.5 }, // birth-
-        { freq: 264, dur: t*1.5 }, // day
-        { freq: 352, dur: t*1.5 }, // to
-        { freq: 330, dur: t*3 },   // you
-        { freq: 0,   dur: t*0.5 }, // pause
-
-        // "Happy birthday to you"
-        { freq: 264, dur: t*1 },
-        { freq: 264, dur: t*0.5 },
-        { freq: 297, dur: t*1.5 },
-        { freq: 264, dur: t*1.5 },
-        { freq: 396, dur: t*1.5 },
-        { freq: 352, dur: t*3 },
-        { freq: 0,   dur: t*0.5 },
-
-        // "Happy birthday dear Thoaa"
-        { freq: 264, dur: t*1 },
-        { freq: 264, dur: t*0.5 },
-        { freq: 528, dur: t*1.5 },
-        { freq: 440, dur: t*1.5 },
-        { freq: 352, dur: t*1.5 },
-        { freq: 330, dur: t*1.5 },
-        { freq: 297, dur: t*1.5 },
-        { freq: 0,   dur: t*0.5 },
-
-        // "Happy birthday to you"
-        { freq: 470, dur: t*1 },
-        { freq: 470, dur: t*0.5 },
-        { freq: 440, dur: t*1.5 },
-        { freq: 352, dur: t*1.5 },
-        { freq: 396, dur: t*1.5 },
-        { freq: 352, dur: t*3 },
-    ];
-
-    // Pause giữa 2 lần
-    const pause = [{ freq: 0, dur: t * 3 }];
-
-    // Lần 2: Cao hơn nửa cung (D major) — nghe tươi vui hơn
-    const shift = 297 / 264; // D/C ratio
-    const verse2 = verse1.map(n => ({
-        freq: n.freq === 0 ? 0 : Math.round(n.freq * shift),
-        dur: n.dur
-    }));
-
-    // Ending chord — kết bài
-    const ending = [
-        { freq: 0,   dur: t * 1 },
-        { freq: 352, dur: t * 1 },
-        { freq: 440, dur: t * 1 },
-        { freq: 528, dur: t * 4 },
-    ];
-
-    const allNotes = [...verse1, ...pause, ...verse2, ...pause, ...ending];
-
-    let time = audioCtx.currentTime + 0.1;
-
-    allNotes.forEach(note => {
-        if (note.freq === 0) {
-            // Rest / pause
-            time += note.dur;
-            return;
-        }
-
-        // Main tone — triangle wave (ấm, mềm)
-        const osc1 = audioCtx.createOscillator();
-        const gain1 = audioCtx.createGain();
-        osc1.type = 'triangle';
-        osc1.frequency.value = note.freq;
-        osc1.connect(gain1);
-        gain1.connect(audioCtx.destination);
-        gain1.gain.setValueAtTime(0.18, time);
-        gain1.gain.setValueAtTime(0.18, time + note.dur * 0.6);
-        gain1.gain.exponentialRampToValueAtTime(0.005, time + note.dur * 0.95);
-        osc1.start(time);
-        osc1.stop(time + note.dur);
-
-        // Harmony — nhẹ nhàng octave trên
-        const osc2 = audioCtx.createOscillator();
-        const gain2 = audioCtx.createGain();
-        osc2.type = 'sine';
-        osc2.frequency.value = note.freq * 2;
-        osc2.connect(gain2);
-        gain2.connect(audioCtx.destination);
-        gain2.gain.setValueAtTime(0.04, time);
-        gain2.gain.exponentialRampToValueAtTime(0.002, time + note.dur * 0.9);
-        osc2.start(time);
-        osc2.stop(time + note.dur);
-
-        time += note.dur;
-    });
-}
-
-musicBtn.addEventListener('click', () => {
-    musicPlaying = !musicPlaying;
-    musicBtn.classList.toggle('playing', musicPlaying);
-    if (musicPlaying) {
-        playBirthdayTune();
-    }
-});
-
-// ============================================
-// SMOOTH SCROLL FOR NAVIGATION
+// SMOOTH SCROLL
 // ============================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -570,22 +579,3 @@ sparkleStyle.textContent = `
     }
 `;
 document.head.appendChild(sparkleStyle);
-
-// ============================================
-// EASTER EGG: Konami Code
-// ============================================
-let konamiCode = [];
-const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
-
-document.addEventListener('keydown', (e) => {
-    konamiCode.push(e.keyCode);
-    if (konamiCode.length > konamiSequence.length) {
-        konamiCode.shift();
-    }
-    if (JSON.stringify(konamiCode) === JSON.stringify(konamiSequence)) {
-        launchConfetti();
-        launchConfetti();
-        document.body.style.animation = 'rainbow-bg 2s ease';
-        setTimeout(() => { document.body.style.animation = ''; }, 2000);
-    }
-});
