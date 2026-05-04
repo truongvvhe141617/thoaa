@@ -152,7 +152,7 @@ function animateFireworks() {
 // COUNTDOWN TIMER — Sinh nhật 5/5
 // ============================================
 function updateCountdown() {
-    const birthday = new Date('2026-05-05T00:00:00');
+    const birthday = new Date('2026-05-04T22:25:00');
     const now = new Date();
     const diff = birthday - now;
 
@@ -162,7 +162,15 @@ function updateCountdown() {
         document.getElementById('minutes').textContent = '🎊';
         document.getElementById('seconds').textContent = '🥳';
 
-        // Trigger celebration when countdown hits zero!
+        // Always unlock sections if birthday has passed
+        const hiddenSections = document.getElementById('hidden-sections');
+        if (!hiddenSections.classList.contains('unlocked')) {
+            hiddenSections.classList.add('unlocked');
+            hiddenSections.style.opacity = '1';
+            setTimeout(handleScrollAnimations, 200);
+        }
+
+        // Trigger celebration once
         if (!window.countdownCelebrated) {
             window.countdownCelebrated = true;
             triggerBirthdayCelebration();
@@ -183,6 +191,15 @@ function updateCountdown() {
 
 // Big celebration when countdown reaches zero
 function triggerBirthdayCelebration() {
+    // Unlock hidden sections
+    const hiddenSections = document.getElementById('hidden-sections');
+    hiddenSections.classList.add('unlocked');
+    // Trigger fade in
+    setTimeout(() => {
+        hiddenSections.style.opacity = '1';
+        handleScrollAnimations();
+    }, 100);
+
     // Confetti explosion — multiple waves
     launchConfetti();
     setTimeout(() => launchConfetti(), 1000);
