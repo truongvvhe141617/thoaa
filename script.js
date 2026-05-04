@@ -152,7 +152,7 @@ function animateFireworks() {
 // COUNTDOWN TIMER — Sinh nhật 5/5
 // ============================================
 function updateCountdown() {
-    const birthday = new Date('2026-05-05T00:00:00');
+    const birthday = new Date('2026-05-04T22:59:00');
     const now = new Date();
     const diff = birthday - now;
 
@@ -170,10 +170,13 @@ function updateCountdown() {
             setTimeout(handleScrollAnimations, 200);
         }
 
-        // Trigger celebration once
+        // Trigger celebration once (banner only, 3-2-1 already done)
         if (!window.countdownCelebrated) {
             window.countdownCelebrated = true;
-            triggerBirthdayCelebration();
+            if (!window.finalCountdownStarted) {
+                // Nếu mở trang khi đã qua sinh nhật → show banner trực tiếp
+                showBirthdayBanner();
+            }
         }
         return;
     }
@@ -183,6 +186,13 @@ function updateCountdown() {
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
+    // Khi còn đúng 3 giây cuối → hiện overlay 3-2-1
+    const totalSeconds = Math.floor(diff / 1000);
+    if (totalSeconds <= 3 && totalSeconds >= 1 && !window.finalCountdownStarted) {
+        window.finalCountdownStarted = true;
+        showFinalCountdown(totalSeconds);
+    }
+
     animateNumber('days', days);
     animateNumber('hours', hours);
     animateNumber('minutes', minutes);
@@ -190,16 +200,123 @@ function updateCountdown() {
 }
 
 // Big celebration when countdown reaches zero
-function triggerBirthdayCelebration() {
-    // Unlock hidden sections
-    const hiddenSections = document.getElementById('hidden-sections');
-    hiddenSections.classList.add('unlocked');
-    // Trigger fade in
-    setTimeout(() => {
-        hiddenSections.style.opacity = '1';
-        handleScrollAnimations();
-    }, 100);
+// showFinalCountdown handles everything now
 
+function showFinalCountdown(startFrom) {
+    const overlay = document.createElement('div');
+    overlay.id = 'final-countdown';
+    overlay.innerHTML = `<div class="fc-text">${startFrom}</div>`;
+    document.body.appendChild(overlay);
+
+    // Audio context for countdown sounds
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playBeep(freq, duration, type) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type || 'sine';
+        osc.frequency.value = freq;
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function playCountBeep() {
+        playBeep(880, 0.15, 'sine');
+    }
+
+    function playFinalDing() {
+        playBeep(523, 1.2, 'sine');
+        playBeep(659, 1.2, 'sine');
+        playBeep(784, 1.5, 'sine');
+        playBeep(1047, 1.8, 'sine');
+    }
+
+    // Add styles
+    const fcStyle = document.createElement('style');
+    fcStyle.textContent = `
+        #final-countdown {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 35, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            backdrop-filter: blur(10px);
+        }
+        .fc-text {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(6rem, 20vw, 14rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #ff6b9d, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fc-pop 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            text-align: center;
+            line-height: 1.2;
+        }
+        .fc-text.fc-final {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            animation: fc-pop 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        @keyframes fc-pop {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    `;
+    document.head.appendChild(fcStyle);
+
+    // Play first beep
+    playCountBeep();
+
+    const fcText = overlay.querySelector('.fc-text');
+    let current = startFrom;
+
+    const interval = setInterval(() => {
+        current--;
+        if (current > 0) {
+            fcText.textContent = current;
+            fcText.style.animation = 'none';
+            fcText.offsetHeight;
+            fcText.style.animation = '';
+            playCountBeep();
+        } else if (current === 0) {
+            fcText.textContent = 'HAPPY BIRTHDAY!';
+            fcText.classList.add('fc-final');
+            fcText.style.animation = 'none';
+            fcText.offsetHeight;
+            fcText.style.animation = '';
+            playFinalDing();
+        } else {
+            clearInterval(interval);
+            // Unlock sections + show banner
+            const hiddenSections = document.getElementById('hidden-sections');
+            hiddenSections.classList.add('unlocked');
+            hiddenSections.style.opacity = '1';
+            setTimeout(handleScrollAnimations, 200);
+
+            setTimeout(() => {
+                overlay.remove();
+                launchConfetti();
+                setTimeout(() => launchConfetti(), 1000);
+                setTimeout(() => launchConfetti(), 2000);
+                showBirthdayBanner();
+                window.countdownCelebrated = true;
+            }, 1200);
+        }
+    }, 1000);
+}
+
+function showBirthdayBanner() {
     // Confetti explosion — multiple waves
     launchConfetti();
     setTimeout(() => launchConfetti(), 1000);
