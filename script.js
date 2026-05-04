@@ -152,7 +152,7 @@ function animateFireworks() {
 // COUNTDOWN TIMER — Sinh nhật 5/5
 // ============================================
 function updateCountdown() {
-    const birthday = new Date('2026-05-04T22:25:00');
+    const birthday = new Date('2026-05-04T22:29:00');
     const now = new Date();
     const diff = birthday - now;
 
@@ -205,9 +205,6 @@ function triggerBirthdayCelebration() {
     setTimeout(() => launchConfetti(), 1000);
     setTimeout(() => launchConfetti(), 2000);
 
-    // Auto play music
-    setTimeout(() => playMusic(), 500);
-
     // Show celebration banner
     const banner = document.createElement('div');
     banner.id = 'birthday-banner';
@@ -216,10 +213,16 @@ function triggerBirthdayCelebration() {
             <div class="banner-emoji">🎂🎉🥳</div>
             <h2>HAPPY BIRTHDAY THOA!</h2>
             <p>Chính thức 18 tuổi rồi nè! 🎊</p>
-            <button onclick="this.parentElement.parentElement.remove()">Cảm ơn! ❤️</button>
+            <button id="banner-btn">Cảm ơn! ❤️</button>
         </div>
     `;
     document.body.appendChild(banner);
+
+    // Play music when clicking "Cảm ơn"
+    document.getElementById('banner-btn').addEventListener('click', function() {
+        playMusic();
+        banner.remove();
+    });
 
     // Add banner styles
     const bannerStyle = document.createElement('style');
@@ -465,7 +468,17 @@ window.onYouTubeIframeAPIReady = function () {
         events: {
             onReady: function () {
                 ytReady = true;
-                ytPlayer.setVolume(60);
+                ytPlayer.setVolume(70);
+            },
+            onStateChange: function (event) {
+                // Update button state when video ends or pauses
+                if (event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.PAUSED) {
+                    musicPlaying = false;
+                    musicBtn.classList.remove('playing');
+                } else if (event.data === YT.PlayerState.PLAYING) {
+                    musicPlaying = true;
+                    musicBtn.classList.add('playing');
+                }
             }
         }
     });
@@ -473,6 +486,7 @@ window.onYouTubeIframeAPIReady = function () {
 
 function playMusic() {
     if (ytReady && ytPlayer) {
+        ytPlayer.seekTo(13); // Start from 13s
         ytPlayer.playVideo();
         musicPlaying = true;
         musicBtn.classList.add('playing');
