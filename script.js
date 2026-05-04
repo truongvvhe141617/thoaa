@@ -330,7 +330,7 @@ function showBirthdayBanner() {
             <div class="banner-emoji">🎂🎉🥳</div>
             <h2>HAPPY BIRTHDAY THOA!</h2>
             <p>Chính thức 18 tuổi rồi nè! 🎊</p>
-            <button id="banner-btn">Cảm ơn! ❤️</button>
+            <button id="banner-btn">Click vào đây !!! ❤️</button>
         </div>
     `;
     document.body.appendChild(banner);
