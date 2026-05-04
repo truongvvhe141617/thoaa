@@ -152,7 +152,7 @@ function animateFireworks() {
 // COUNTDOWN TIMER — Sinh nhật 5/5
 // ============================================
 function updateCountdown() {
-    const birthday = new Date('2026-05-04T23:07:00');
+    const birthday = new Date('2026-05-05T00:00:00');
     const now = new Date();
     const diff = birthday - now;
 
