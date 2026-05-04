@@ -451,55 +451,35 @@ function animateConfetti() {
 animateConfetti();
 
 // ============================================
-// MUSIC — YouTube IFrame API
+// MUSIC — Audio element (no video popup on mobile)
 // ============================================
 const musicBtn = document.getElementById('music-toggle');
 let musicPlaying = false;
-let ytPlayer = null;
-let ytReady = false;
-
-// Load YouTube IFrame API
-const ytScript = document.createElement('script');
-ytScript.src = 'https://www.youtube.com/iframe_api';
-document.head.appendChild(ytScript);
-
-window.onYouTubeIframeAPIReady = function () {
-    ytPlayer = new YT.Player('yt-player', {
-        events: {
-            onReady: function () {
-                ytReady = true;
-                ytPlayer.setVolume(70);
-            },
-            onStateChange: function (event) {
-                // Update button state when video ends or pauses
-                if (event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.PAUSED) {
-                    musicPlaying = false;
-                    musicBtn.classList.remove('playing');
-                } else if (event.data === YT.PlayerState.PLAYING) {
-                    musicPlaying = true;
-                    musicBtn.classList.add('playing');
-                }
-            }
-        }
-    });
-};
+const bgMusic = document.getElementById('bg-music');
+bgMusic.volume = 0.7;
 
 function playMusic() {
-    if (ytReady && ytPlayer) {
-        ytPlayer.seekTo(13); // Start from 13s
-        ytPlayer.playVideo();
+    bgMusic.currentTime = 13; // Start from 13s
+    bgMusic.play().then(() => {
         musicPlaying = true;
         musicBtn.classList.add('playing');
-    }
+    }).catch(() => {
+        // Autoplay blocked — will play on next user interaction
+        musicPlaying = false;
+    });
 }
 
 function pauseMusic() {
-    if (ytReady && ytPlayer) {
-        ytPlayer.pauseVideo();
-        musicPlaying = false;
-        musicBtn.classList.remove('playing');
-    }
+    bgMusic.pause();
+    musicPlaying = false;
+    musicBtn.classList.remove('playing');
 }
+
+bgMusic.addEventListener('ended', () => {
+    // Loop from 13s
+    bgMusic.currentTime = 13;
+    bgMusic.play();
+});
 
 musicBtn.addEventListener('click', () => {
     if (musicPlaying) {

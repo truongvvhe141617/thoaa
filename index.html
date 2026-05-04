@@ -36,12 +36,10 @@
         <span class="music-icon">🎵</span>
     </button>
 
-    <!-- YouTube Music (hidden) -->
-    <div id="youtube-player-wrapper" style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;">
-        <iframe id="yt-player" width="1" height="1" 
-            src="https://www.youtube.com/embed/5u4xTa3LR2U?enablejsapi=1&autoplay=0&loop=1&playlist=5u4xTa3LR2U&start=13" 
-            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
+    <!-- Background Music (audio only - no video) -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- Hero Section -->
     <section id="hero" class="section hero">
